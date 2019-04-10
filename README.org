@@ -1,2 +1,14 @@
-# Blanket
-Python test coverage anaylsis tool.
+* Blanket
+A tool for measuring test coverage in terms of function-calls.
+
+Project maintainers spend considerable attention and effort testing source. However, without a tool for judging the quality and completeness of these tests with respect to the system under tests.
+
+This project aims to experimentally develop mechanisms for automating the analysis of test coverage.
+
+As an initial implementation, the project simply measures function coverage. That is, what proportion of functions defined in the project are evoked in test files?
+
+** Use
+This project is still under development: Instructions to follow.
+
+** Limitations
+The measurement of function call coverage ignores the concept of namespacing as a simplifying assumption.
