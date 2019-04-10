@@ -29,9 +29,6 @@ def get_fns_called(path):
     return calls_with_module_removed
 
 
-res2 = get_fns_called("./dev-resources/samplemod/tests/test_advanced.py")
-
-
 def get_fns_defined(path):
     ''' Given a path to a python file, find the names of all functions
     defined therein.'''
@@ -43,12 +40,8 @@ def get_fns_defined(path):
 
 def tally_function_calls(test_path):
     test_files = repository.find_python_files(test_path)
-    # TODO: use fcalls vs fdef
     seen = reduce(concat, map(get_fns_called, test_files))
     return seen
-
-
-res2 = tally_function_calls("./dev-resources/samplemod/tests/")
 
 
 def report_coverage(source_path, test_path):
@@ -65,12 +58,26 @@ def report_coverage(source_path, test_path):
 
         report[module_name] = {
             "source_path": f,
-            "function_call_count": function_counts
+            "calls": function_counts
         }
 
     return report
 
 
-source_path = "./dev-resources/samplemod/sample/"
-test_path = "./dev-resources/samplemod/tests/"
-res = report_coverage(source_path, test_path)
+def format_report(report):
+    formatted = "Report:\n"
+    template = "\tModule: {}\n\t\tPath: {}\n\t\tFunctions Not Called: {}\n\n"
+    for module, result in report.items():
+        uncalled_fns = [
+            id for id, calls in result["calls"].items() if calls == 0
+        ]
+        print(uncalled_fns)
+        if uncalled_fns:
+            formatted_calls = "; ".join(uncalled_fns)
+            formatted += template.format(module,
+                                        result["source_path"], formatted_calls)
+
+    return formatted
+
+# res = report_coverage("./dev-resources/samplemod/sample", "./dev-resources/samplemod/tests")
+# fres = format_report(res)
